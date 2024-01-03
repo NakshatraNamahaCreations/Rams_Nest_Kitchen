@@ -14,9 +14,10 @@ function Customers() {
   const [data, setdata] = useState([]);
   const [pending, setPending] = useState(true);
   const apiURL = "https://api.ramsnesthomestay.com/api";
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [searchName, setSearchName] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
+
   useEffect(() => {
     getcustomer();
   }, []);
@@ -61,7 +62,6 @@ function Customers() {
         console.log(error.response.data);
       });
   };
-  // const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -72,13 +72,18 @@ function Customers() {
   }, [filteredData]);
 
   const paginationComponentOptions = {
-    rowsPerPageText: "Filas por página",
-    rangeSeparatorText: "de",
+    rowsPerPageText: "Rows per page",
+    rangeSeparatorText: "of",
     selectAllRowsItem: true,
-    selectAllRowsItemText: "Todos",
+    // selectAllRowsItemText: "",
   };
 
   const columns = [
+    {
+      name: "Sr.No",
+      selector: (index, row) => row + 1,
+      sortable: true,
+    },
     {
       name: "Order Id",
       selector: (row) => `#${row._id.slice(-5)}`,
@@ -109,8 +114,34 @@ function Customers() {
       selector: (row) => row.noOfPerson,
       sortable: true,
     },
+
     {
-      name: "Action",
+      name: "Status",
+      sortable: true,
+      cell: (row) => (
+        <div>
+          {row.foodStatus === "delivered" ? (
+            <div style={{ color: "green", fontWeight: 600 }}>
+              Order Delivered
+            </div>
+          ) : row.foodStatus === "startCooking" ? (
+            <div style={{ color: "#ffc107", fontWeight: 600 }}>
+              Preparing Orders
+            </div>
+          ) : row.foodStatus === "readyToServe" ? (
+            <div style={{ color: "#0d6efd", fontWeight: 600 }}>
+              Ready To Serve
+            </div>
+          ) : (
+            <div style={{ color: "#d63384", fontWeight: 600 }}>
+              Order Received
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      name: "View Dishes",
       sortable: true,
       cell: (row) => (
         <div>
@@ -124,23 +155,33 @@ function Customers() {
         </div>
       ),
     },
-    {
-      name: "Status",
-      sortable: true,
-      cell: (row) => (
-        <div>
-          {row.foodStatus === "delivered"
-            ? "Order Delivered"
-            : row.foodStatus === "startCooking"
-            ? "Preparing Orders"
-            : row.foodStatus === "readyToServe"
-            ? "Ready To Serve"
-            : "Order Received"}
-        </div>
-      ),
-    },
+  ];
+  // search by name filter function input
+  useEffect(() => {
+    // Filter data based on the searchName and selectedStatus
+    const updatedFilteredData = data.filter(
+      (entry) =>
+        entry.selectedDishes.length > 0 &&
+        entry.guestName.toLowerCase().includes(searchName.toLowerCase()) &&
+        (selectedStatus === "" || entry.foodStatus === selectedStatus)
+    );
+    setSearchResults(updatedFilteredData);
+  }, [searchName, selectedStatus, data]);
+
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+  };
+
+  const statusOptions = [
+    { label: "All", value: "" },
+    // { label: "Order Received", value: "received" },
+    { label: "Preparing Orders", value: "startCooking" },
+    { label: "Ready To Serve", value: "readyToServe" },
+    { label: "Order Delivered", value: "delivered" },
   ];
 
+  // sort by dorpdow
+  const currentDate = new Date();
   // const handleRowClicked = (row) => {
   //   // If you want to do something when a row is clicked
   //   // For example, navigate to another page
@@ -158,16 +199,49 @@ function Customers() {
         </div> */}
 
         <div style={{ padding: "0px 27px 0px 35px" }}>
+          <div className="d-flex" style={{ justifyContent: "right" }}>
+            <h6> {moment(currentDate).format("MMMM Do YYYY")}</h6>
+          </div>
           <h4 className="text-center mb-3 mt-3">Kitchen Orders</h4>
+          <div
+            className="d-flex"
+            style={{ justifyContent: "flex-end", alignItems: "center" }}
+          >
+            {/* <p>Sort by </p> */}
+            <select
+              className="px-2 py-2"
+              style={{
+                border: "1px solid #0000006e",
+                borderRadius: "5px",
+              }}
+              value={selectedStatus}
+              onChange={handleStatusChange}
+            >
+              {statusOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <input
+              className="ms-2 px-2 py-2"
+              placeholder="Search by guest name"
+              style={{
+                border: "1px solid #0000006e",
+                borderRadius: "5px",
+                width: "25%",
+              }}
+              onChange={(e) => setSearchName(e.target.value)}
+            />
+          </div>{" "}
+          <br />
           <div>
             <DataTable
               columns={columns}
-              data={filteredData}
-              //  actions={actionsMemo}
+              data={searchResults}
               progressPending={pending}
               pagination
               paginationComponentOptions={paginationComponentOptions}
-              // onRowClicked={handleRowClicked}
             />
           </div>
         </div>
