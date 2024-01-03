@@ -1,0 +1,137 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.pro-sidebar-inner {
+  background: white !important;
+}
+.pro-item-content {
+  color: black !important;
+  font-size: 14px !important;
+}
+.pro-inner-list-item {
+  background-color: white !important;
+}
+.v1 {
+  border-left: 1px solid rgb(167, 159, 159);
+  height: 650px;
+}
+.pointer {
+  cursor: pointer;
+}
+
+.adlogin input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid lightgray;
+  border-radius: 12px;
+}
+.adlogin label {
+  margin-top: 30px;
+}
+.loginform {
+  margin-top: 7%;
+}
+.center {
+  text-align: center;
+}
+input:focus {
+  border: 1px solid white;
+  outline: none;
+}
+.fi {
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.jzrolw {
+  border: 1px solid #e0e0e0;
+}
+.gocYik {
+  background-color: #3c8dbc !important;
+  color: white;
+}
+.orderdetails-head {
+  line-height: 1.5;
+  font-weight: 600;
+  color: #3d4152;
+  font-size: 17.75px;
+}
+/* .card-body-roder {
+  padding: 1.875rem;
+  border: 1px solid #fc8019;
+  border-radius: 0.5rem;
+  transition: all 0.5s ease-in-out;
+  margin-bottom: 1.875rem;
+} */
+.font-w600 {
+  font-size: 1rem;
+  color: #6471a4;
+}
+.order-menu img {
+  width: 5.313rem;
+  height: 5.313rem;
+  object-fit: cover;
+  border: 1px solid #fc8019;
+  border-radius: 0.625rem;
+}
+.customer-order-sde {
+  font-size: 17px;
+}
+.card-dashboard {
+  margin-bottom: 1.875rem;
+  background-color: #fff;
+  transition: all 0.5s ease-in-out;
+  position: relative;
+  border: 0px solid transparent;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 13px 0px rgba(82, 63, 105, 0.05);
+  height: calc(100% - 30px);
+  background: linear-gradient(to right, #ea7a9a 0%, #fac7b6 100%);
+}
+.card-dash-body {
+  padding: 1.875rem;
+}
+.print-invoice-text {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: #0d6efd;
+  cursor: pointer;
+}
+.print-invoice-text:hover {
+  color: #5695f3;
+}
