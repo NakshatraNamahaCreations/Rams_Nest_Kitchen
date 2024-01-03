@@ -65,7 +65,7 @@ function Login() {
         console.log(res.data);
         if (res.status === 200) {
           alert("Login successful");
-          window.location.assign("/customerorder");
+          window.location.assign("/home");
           sessionStorage.setItem("admin", JSON.stringify(res.data.admin));
           return res;
         } else {

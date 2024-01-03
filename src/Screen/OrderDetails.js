@@ -158,7 +158,17 @@ function OrderDetails() {
           Table {customerOrders.selectedTable} - {customerOrders.noOfPerson}{" "}
           Person{" "}
         </div>
-
+        {customerOrders.foodStatus === "delivered" && (
+          <div className="print-invoice-text">
+            <Link
+              to={`/print-invoice/${id}`}
+              stat
+              style={{ textDecoration: "none" }}
+            >
+              <i class="fa-solid fa-print me-1"></i> Print Invoice
+            </Link>
+          </div>
+        )}
         {/* <br /> */}
         <div className="row me-0 mt-2">
           <div
