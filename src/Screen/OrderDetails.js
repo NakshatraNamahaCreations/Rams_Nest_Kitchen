@@ -7,12 +7,15 @@ function OrderDetails() {
   const [customerOrders, setCustomerOrders] = useState({});
   const [selectedDishes, setSelectedDishes] = useState([]);
   const [allFood, setAllFoods] = useState([]);
+  const [data, setdata] = useState([]);
+  const apiURL = "https://api.ramsnesthomestay.com/api";
   // const [orderStatus, setOrderStatus] = useState("startCooking");
   // const customerOrders = {};
 
   useEffect(() => {
     getAllOrderDetails();
     getAllFoods();
+    getcustomer();
   }, []);
 
   const getAllOrderDetails = async () => {
@@ -38,6 +41,24 @@ function OrderDetails() {
       console.error("Error fetching order details:", error);
     }
   };
+
+  const getcustomer = async () => {
+    try {
+      const response = await axios.get(`${apiURL}/orders/getcustomerbooking`);
+
+      if (response.status === 200) {
+        console.log("all customers", response.data);
+        console.log("id", id);
+        setdata(response.data.customerDetails);
+      }
+    } catch (error) {
+      console.warn(error);
+      alert("Can't able to fetch ");
+      // setdatacondition(true);
+      return error;
+    }
+  };
+
   const getAllFoods = async () => {
     let res = await axios.get(
       "https://api.ramsnesthomestay.com/api/getallfood"
@@ -148,10 +169,27 @@ function OrderDetails() {
       console.error("Error:", error);
     }
   };
+
+  const filteredData = data.filter((entry) => entry.selectedDishes.length > 0);
+
+  const findingCustomer = id;
+  const findingIndex = filteredData.findIndex(
+    (item) => item._id === findingCustomer
+  );
+
+  const generatingOrder = () => {
+    if (findingIndex != -1) {
+      return findingIndex + 1;
+    } else {
+      return 0;
+    }
+  };
+  const orderID = generatingOrder();
+
   return (
     <div className="container">
       <div className="mt-5">
-        <div className="orderdetails-head">Order Id : #{id.slice(-5)} </div>
+        <div className="orderdetails-head">Order Id : #{orderID} </div>
         <div className="customer-order-sde">{customerOrders.guestName} </div>
         <div className="customer-order-sde">{customerOrders.mobileNumber} </div>
         <div className="customer-order-sde">

@@ -28,7 +28,7 @@ function Customers() {
 
       if (response.status === 200) {
         console.log("all orders", response.data);
-        setdata(response.data.customerDetails);
+        setdata(response.data.customerDetails.reverse());
       }
     } catch (error) {
       console.warn(error);
@@ -42,9 +42,6 @@ function Customers() {
     navigate(`/orderdetails/${id}`);
     // window.location.assign = "orderdetails/" + id;
   };
-
-  const filteredData = data.filter((entry) => entry.selectedDishes.length > 0);
-  console.log("filteredData", filteredData);
 
   const update = async (data) => {
     axios({
@@ -61,6 +58,18 @@ function Customers() {
         //handle error
         console.log(error.response.data);
       });
+  };
+
+  const filteredData = data.filter((entry) => entry.selectedDishes.length > 0);
+  console.log("filteredData", filteredData);
+
+  const generatingOrder = (row) => {
+    const findingCustomer = row._id;
+    const findingIndex = filteredData.findIndex(
+      (item) => item._id === findingCustomer
+    );
+    const orderId = filteredData.length - findingIndex;
+    return `#${orderId} `;
   };
 
   useEffect(() => {
@@ -86,7 +95,7 @@ function Customers() {
     },
     {
       name: "Order Id",
-      selector: (row) => `#${row._id.slice(-5)}`,
+      selector: (row) => generatingOrder(row),
       sortable: true,
     },
     {
